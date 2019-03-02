@@ -2,6 +2,7 @@
 package groupproject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  *
@@ -19,18 +20,46 @@ public class MasterAccount extends Account{
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
     }
-    
-    public void verifyPasswordLength(String password){
-        password = getPassword();
+
+    public String getSecurityQuestion() {
+        return securityQuestion;
     }
 
+    public String getSecurityAnswer() {
+        return securityAnswer;
+    }
+
+    public ArrayList<ChildAccount> getChildAccounts() {
+        return childAccounts;
+    }
+
+    public void chooseSecurityQuestion() {
+        this.securityQuestion = securityQuestion;
+    }
+
+    public void setSecurityAnswer(String securityAnswer) {
+        
+    }
+    
+    public boolean loginVerify(String passwordEntered, String userNameEntered) {
+        return true;
+    }
+    
+    public boolean verifyPasswordLength(){
+        
+        if ((getPassword().length() < 8) || (getPassword().length() > 16)) {
+            System.out.println("password must be between 8 and 16 chars in length");
+        }
+        return true;
+    }
+    
     @Override
-    public void changePassword() {
+    public void setPassword(String password) {
         
     }
 
     @Override
-    public void changeUserName() {
+    public void setUserName(String userName) {
         
     }
 

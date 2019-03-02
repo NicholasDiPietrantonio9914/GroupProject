@@ -23,6 +23,6 @@ public abstract class Account {
         return password;
     }
     
-    public abstract void changePassword();
-    public abstract void changeUserName();
+    public abstract void setPassword(String password);
+    public abstract void setUserName(String userName);
 }
