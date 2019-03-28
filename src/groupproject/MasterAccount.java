@@ -32,6 +32,10 @@ public class MasterAccount extends Account{
     public ArrayList<ChildAccount> getChildAccounts() {
         return childAccounts;
     }
+    
+    public void addChildAccount() {
+        return childAccounts;
+    }
 
     public void chooseSecurityQuestion() {
         this.securityQuestion = securityQuestion;

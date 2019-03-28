@@ -7,13 +7,21 @@ package groupproject;
  */
 public class ChildAccount extends Account{
     
-    private String information;
+    private String login;
 
-    public ChildAccount(String userName, String password, String information) {
+    public ChildAccount(String userName, String password, String login) {
         super(userName, password);
-        this.information = information;
+        this.login = login;
     }
 
+    public String getAccountUse() {
+        return login;
+    }
+
+    public void setAccountUse(String login) {
+        this.login = login;
+    }
+    
     public String getInformation() {
         return information;
     }

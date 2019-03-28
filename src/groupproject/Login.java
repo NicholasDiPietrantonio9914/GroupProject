@@ -2,6 +2,7 @@ package groupproject;
 
 import java.util.ArrayList;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -29,12 +30,11 @@ import javafx.stage.Stage;
  *
  * @author Joey
  */
-public class Main extends Application{
+public class Login {
     
-    private static ArrayList<MasterAccount> masterAccounts = new ArrayList<>();
+    private ArrayList<MasterAccount> masterAccounts = new ArrayList<>();
       
-    @Override
-    public void start(Stage primaryStage){
+    public Scene Login(){
         
         CreateAccount createAccount = new CreateAccount();
         ForgotPassword forgotPassword = new ForgotPassword();
@@ -127,8 +127,6 @@ public class Main extends Application{
     public void addMaster(MasterAccount masterAccount) {
         masterAccounts.add(masterAccount);
     }
-    
-    public static void main(String[] args){
-        launch(args);
-    }
+
 }
+
