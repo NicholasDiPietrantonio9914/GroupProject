@@ -1,5 +1,6 @@
 package groupproject;
 
+import groupproject.model.*;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -30,15 +31,18 @@ import javafx.stage.Stage;
 public class CreateAccount {
     
     private MasterAccount masterAccount;
-    Scene scene;
+    private ArrayMasterAccount arrayMasterAccount = new ArrayMasterAccount();
     
     public void createAccount(Stage stageCreate) {
+        
         Main main = new Main();
+        
         VBox root = new VBox();
 
         TextField txtUserName = new TextField();
         TextField txtPassword = new TextField();
         Button btnBack = new Button("Back");
+        
         btnBack.setOnAction(event -> {
             main.start(stageCreate);
         });
@@ -46,12 +50,12 @@ public class CreateAccount {
         Button btnCreate = new Button("Create");
         btnCreate.setOnAction((ActionEvent event) -> {
             createAcc(txtUserName.getText(), txtPassword.getText());
-            main.addMaster(masterAccount);
+            arrayMasterAccount.addMaster(masterAccount);
             main.start(stageCreate);
         });
         
         root.getChildren().addAll(txtUserName, txtPassword, btnCreate, btnBack);
-        scene = new Scene(root);
+        Scene scene = new Scene(root, 800, 600);
         stageCreate.setTitle("DC Password Organizer: Forgot Password");
         stageCreate.setScene(scene);
         stageCreate.show();

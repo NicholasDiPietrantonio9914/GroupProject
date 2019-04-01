@@ -1,7 +1,11 @@
 package groupproject;
 
+import groupproject.model.*;
 import java.util.ArrayList;
+import java.util.Optional;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -30,14 +35,14 @@ import javafx.stage.Stage;
  * @author Joey
  */
 public class Main extends Application{
-    
-    private static ArrayList<MasterAccount> masterAccounts = new ArrayList<>();
       
     @Override
     public void start(Stage primaryStage){
         
+        ArrayMasterAccount arrayMasterAccount = new ArrayMasterAccount();
         CreateAccount createAccount = new CreateAccount();
         ForgotPassword forgotPassword = new ForgotPassword();
+        LoggedOn loggedOn = new LoggedOn();
         
         BorderPane borderPane = new BorderPane();
         borderPane.setPadding(new Insets(10,50,50,50));
@@ -49,20 +54,23 @@ public class Main extends Application{
         TextField txtPassword = new TextField();
         Button btnLogin = new Button("Login");
         
-        btnLogin.setOnAction(event -> {
-                if (login(txtUsername.getText(), txtPassword.getText())) {
-                    System.out.println("yes");
-                    //primaryStage.setScene(scene2);
-                } else {
-                    Alert alert = new Alert(AlertType.ERROR);
-                }
+        btnLogin.setOnAction((ActionEvent event) -> {
+            if (arrayMasterAccount.login(txtUsername.getText(), txtPassword.getText())) {
+                loggedOn.loggedOn(primaryStage);
+            } else {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Login Error");
+                alert.setHeaderText("Entered Login Information Not Valid");
+                alert.setContentText("Please enter valid login information");
+                Optional<ButtonType> result = alert.showAndWait();
+            }
         });
                 
         Hyperlink createAccLink = new Hyperlink("Create account");
         createAccLink.setOnAction(event -> createAccount.createAccount(primaryStage));
         
         Hyperlink forgotPwdLink = new Hyperlink("Forgot your password?");
-        forgotPwdLink.setOnAction(event -> forgotPassword.forgotPassword(primaryStage));
+        forgotPwdLink.setOnAction(event -> forgotPassword.forgotPasswordUser(primaryStage));
         
         btnLogin.setMaxWidth(Double.MAX_VALUE);
         
@@ -110,22 +118,6 @@ public class Main extends Application{
         primaryStage.setTitle("DC Password Organizer");
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    private boolean login(String userName, String password) {
-        System.out.println(masterAccounts);
-        System.out.println(masterAccounts.size());
-            for (int i = 0; i < masterAccounts.size() ; i++) {
-                if (masterAccounts.get(i).getUserName() == userName &&
-                        masterAccounts.get(i).getPassword() == password) {
-                    return true;
-                }
-            }
-            return false;
-    }
-    
-    public void addMaster(MasterAccount masterAccount) {
-        masterAccounts.add(masterAccount);
     }
     
     public static void main(String[] args){

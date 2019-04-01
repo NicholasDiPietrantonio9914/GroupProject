@@ -26,10 +26,34 @@ import javafx.stage.Stage;
  */
 public class ForgotPassword {
     
-    public void forgotPassword(Stage stagePassword) {
+    public void forgotPasswordUser(Stage stagePassword) {
         
         Main main = new Main();
         VBox root = new VBox();
+        
+        TextField txtUserName = new TextField();
+        
+        Button btnBack = new Button("Back");
+        btnBack.setOnAction(event -> main.start(stagePassword));
+        
+        Button btnNext = new Button("Next");
+        btnNext.setOnAction(event -> forgotPasswordSecurity(stagePassword));
+        
+        root.getChildren().addAll(txtUserName, btnBack, btnNext);
+        
+        Scene scene = new Scene(root, 800, 600);
+        stagePassword.setTitle("DC Password Organizer: Forgot Password");
+        stagePassword.setScene(scene);
+        stagePassword.show();
+    }
+    
+    public void forgotPasswordSecurity(Stage stagePassword) {
+        
+        Main main = new Main();
+        VBox root = new VBox();
+        
+        Label lblSecurityQuestion = new Label();
+        
         
         Button btnBack = new Button("Back");
         btnBack.setOnAction(event -> main.start(stagePassword));

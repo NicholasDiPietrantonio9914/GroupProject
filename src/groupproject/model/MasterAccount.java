@@ -1,5 +1,5 @@
 
-package groupproject;
+package groupproject.model;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -8,15 +8,18 @@ import java.util.Objects;
  *
  * @author IKTCFUUTJFHMX
  */
-public class MasterAccount extends Account{
+public class MasterAccount implements Account{
     
+    private String userName;
+    private String password;
     private String securityQuestion;
     private String securityAnswer;
-    private ArrayList <ChildAccount> childAccounts;
+    private ArrayList <ChildAccount> childAccounts = new ArrayList<>();
 
     public MasterAccount(String userName, String password, 
             String securityQuestion, String securityAnswer) {
-        super(userName, password);
+        this.userName = userName;
+        this.password = password;
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
     }
@@ -33,20 +36,16 @@ public class MasterAccount extends Account{
         return childAccounts;
     }
     
-    public void addChildAccount() {
-        return childAccounts;
+    public void addChildAccount(ChildAccount childAccount) {
+        childAccounts.add(childAccount);
     }
 
-    public void chooseSecurityQuestion() {
+    public void setSecurityQuestion() {
         this.securityQuestion = securityQuestion;
     }
 
     public void setSecurityAnswer(String securityAnswer) {
-        
-    }
-    
-    public boolean loginVerify(String passwordEntered, String userNameEntered) {
-        return true;
+        this.securityAnswer = securityAnswer;
     }
     
     public boolean verifyPasswordLength(){
@@ -59,12 +58,17 @@ public class MasterAccount extends Account{
     
     @Override
     public void setPassword(String password) {
-        
+        this.password = password;
     }
 
     @Override
-    public void setUserName(String userName) {
-        
+    public String getUserName() {
+        return userName;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 
 }
