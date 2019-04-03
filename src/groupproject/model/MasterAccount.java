@@ -15,6 +15,7 @@ public class MasterAccount implements Account{
     private String securityQuestion;
     private String securityAnswer;
     private ArrayList <ChildAccount> childAccounts = new ArrayList<>();
+    private ArrayMasterAccount update = new ArrayMasterAccount();
 
     public MasterAccount(String userName, String password, 
             String securityQuestion, String securityAnswer) {
@@ -45,9 +46,8 @@ public class MasterAccount implements Account{
     }
     
     public void addChildAccount(ChildAccount childAccount) {
-        ArrayMasterAccount add = new ArrayMasterAccount();
         childAccounts.add(childAccount);
-        add.createJson();
+        update.createJson();
     }
     
     public boolean verifyPassOrUserLength(String passOrUser){
@@ -65,6 +65,7 @@ public class MasterAccount implements Account{
             throw new IllegalArgumentException("Invalid password entered");
         } else {
             this.password = password;
+            update.createJson();
         }
     }
 

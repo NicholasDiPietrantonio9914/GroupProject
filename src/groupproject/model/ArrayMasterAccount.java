@@ -2,12 +2,17 @@ package groupproject.model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -17,6 +22,7 @@ public class ArrayMasterAccount {
 
     private static ArrayList<MasterAccount> masterAccounts = new ArrayList<>(0);
     private static MasterAccount logged;
+    private JSONObject root;
 
     public void addMaster(MasterAccount masterAccount) {
         masterAccounts.add(masterAccount);
@@ -70,7 +76,7 @@ public class ArrayMasterAccount {
     }
 
     public void createJson() {
-        JSONObject root = new JSONObject();
+        root = new JSONObject();
 
         JSONArray jSONMasterAccounts = new JSONArray();
 
@@ -85,9 +91,9 @@ public class ArrayMasterAccount {
             for (int j = 0; j < masterAccounts.get(i).getChildAccounts().size(); j++) {
                 JSONObject childAccount = new JSONObject();
                 childAccount.put("login", masterAccounts.get(i).getChildAccounts().get(j).getLogin());
-                childAccount.put("userName", masterAccounts.get(i).getChildAccounts().get(j).getLogin());
-                childAccount.put("password", masterAccounts.get(i).getChildAccounts().get(j).getLogin());
-                childAccount.put("other", masterAccounts.get(i).getChildAccounts().get(j).getLogin());
+                childAccount.put("userName", masterAccounts.get(i).getChildAccounts().get(j).getUserName());
+                childAccount.put("password", masterAccounts.get(i).getChildAccounts().get(j).getPassword());
+                childAccount.put("other", masterAccounts.get(i).getChildAccounts().get(j).getOther());
                 jSONChildAccounts.add(childAccount);
             }
             masterAccount.put("childAccounts", jSONChildAccounts);
@@ -111,6 +117,44 @@ public class ArrayMasterAccount {
     }
 
     public void loadJson() {
+        try {
+            JSONParser parser = new JSONParser();
+            //Object obj = new JSONParser().parse(new FileReader("src/groupproject/JSON/GroupProject.json")); 
+            JSONObject root = (JSONObject) new JSONParser().parse(
+                    new FileReader("src/groupproject/JSON/GroupProject.json")); 
+            JSONArray masterAccs = (JSONArray) root.get("masterAccounts");
+            
+            for (int i = 0 ; i < masterAccs.size() ; i++) {
+                JSONObject masterAccount = (JSONObject) masterAccs.get(i);
+                JSONArray childAccs = (JSONArray) masterAccount.get("childAccounts");
+                MasterAccount masterAcc = new MasterAccount(
+                        (String) masterAccount.get("userName"), 
+                        (String) masterAccount.get("password"), 
+                        (String) masterAccount.get("securityQuestion"), 
+                        (String) masterAccount.get("securityAnswer"));
+                
+                
+                for (int j = 0 ; j < childAccs.size() ; j++) {
+                    JSONObject childAccount = (JSONObject) childAccs.get(j);
+                    ChildAccount childAcc = new ChildAccount(
+                        (String) childAccount.get("login"), 
+                        (String) childAccount.get("userName"), 
+                        (String) childAccount.get("password"), 
+                        (String) childAccount.get("other"));
+                    masterAcc.getChildAccounts().add(childAcc);
+                }
+                masterAccounts.add(masterAcc);
+            
+            }
+        } catch (ParseException ex) {
+            System.out.println(ex);
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex);
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
         
+        
+    
     }
 }
