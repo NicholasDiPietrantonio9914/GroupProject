@@ -1,4 +1,3 @@
-
 package groupproject.model;
 
 import javafx.scene.control.Button;
@@ -7,8 +6,8 @@ import javafx.scene.control.Button;
  *
  * @author IKTCFUUTJFHMX
  */
-public class ChildAccount implements Account{
-    
+public class ChildAccount implements Account {
+
     private String login;
     private String userName;
     private String password;
@@ -17,12 +16,16 @@ public class ChildAccount implements Account{
     private Button btnRemove;
 
     public ChildAccount(String login, String userName, String password, String other) {
-        this.login = login;
-        this.userName = userName;
-        this.password = password;
-        this.other = other;
-        this.btnEdit = new Button("Edit");
-        this.btnRemove = new Button("Remove");
+        if (login.trim().equals("")) {
+            throw new IllegalArgumentException("Login field must contain information at a minimum");
+        } else {
+            this.login = login;
+            this.userName = userName;
+            this.password = password;
+            this.other = other;
+            this.btnEdit = new Button("Edit");
+            this.btnRemove = new Button("Remove");
+        }
     }
 
     public String getOther() {
@@ -45,7 +48,7 @@ public class ChildAccount implements Account{
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     public void setUserName(String userName) {
         this.userName = userName;
     }

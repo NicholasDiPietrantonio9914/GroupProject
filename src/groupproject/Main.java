@@ -51,7 +51,7 @@ public class Main extends Application{
         Label lblUsername = new Label("Username:");
         Label lblPassword = new Label("Password:"); 
         TextField txtUsername = new TextField();
-        TextField txtPassword = new TextField();
+        PasswordField txtPassword = new PasswordField();
         Button btnLogin = new Button("Login");
         
         btnLogin.setOnAction((ActionEvent event) -> {
@@ -121,6 +121,8 @@ public class Main extends Application{
     }
     
     public static void main(String[] args){
+        ArrayMasterAccount arrayMasterAccount = new ArrayMasterAccount();
+        arrayMasterAccount.loadJson();
         launch(args);
     }
 }

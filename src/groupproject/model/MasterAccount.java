@@ -18,10 +18,18 @@ public class MasterAccount implements Account{
 
     public MasterAccount(String userName, String password, 
             String securityQuestion, String securityAnswer) {
-        this.userName = userName;
-        this.password = password;
-        this.securityQuestion = securityQuestion;
-        this.securityAnswer = securityAnswer;
+        if ((verifyPassOrUserLength(password)) || (password.contains(" "))) {
+            throw new IllegalArgumentException("Invalid password entered");
+        } else if ((verifyPassOrUserLength(userName)) || (password.contains(" "))) {
+            throw new IllegalArgumentException("Invalid username entered");
+        } else if ((securityAnswer.contains(" ")) || (securityAnswer.equals(""))) {
+            throw new IllegalArgumentException("Invalid security answer entered");
+        } else {
+            this.userName = userName;
+            this.password = password;
+            this.securityQuestion = securityQuestion;
+            this.securityAnswer = securityAnswer;
+        }
     }
 
     public String getSecurityQuestion() {
@@ -37,28 +45,27 @@ public class MasterAccount implements Account{
     }
     
     public void addChildAccount(ChildAccount childAccount) {
+        ArrayMasterAccount add = new ArrayMasterAccount();
         childAccounts.add(childAccount);
-    }
-
-    public void setSecurityQuestion() {
-        this.securityQuestion = securityQuestion;
-    }
-
-    public void setSecurityAnswer(String securityAnswer) {
-        this.securityAnswer = securityAnswer;
+        add.createJson();
     }
     
-    public boolean verifyPasswordLength(){
+    public boolean verifyPassOrUserLength(String passOrUser){
         
-        if ((getPassword().length() < 8) || (getPassword().length() > 16)) {
-            System.out.println("password must be between 8 and 16 chars in length");
+        if ((passOrUser.length() < 4) || (passOrUser.length() > 12)) {
+            return true;
         }
-        return true;
+        return false;
     }
     
     @Override
     public void setPassword(String password) {
-        this.password = password;
+        if ((verifyPassOrUserLength(password)) || (password.contains(" ")) ||
+                (this.password.equals(password))) {
+            throw new IllegalArgumentException("Invalid password entered");
+        } else {
+            this.password = password;
+        }
     }
 
     @Override

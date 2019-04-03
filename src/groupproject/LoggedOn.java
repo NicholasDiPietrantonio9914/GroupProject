@@ -1,6 +1,7 @@
 package groupproject;
 
 import groupproject.model.*;
+import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,7 +9,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import static javafx.geometry.Pos.BOTTOM_CENTER;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -38,13 +41,14 @@ public class LoggedOn {
     public void loggedOn(Stage stageLoggedOn) {
 
         Main main = new Main();
+        ChangePassword changePassword = new ChangePassword();
 
         display();
-        
+
         MenuItem menuItem1 = new MenuItem("Change Master Password");
         MenuItem menuItem2 = new MenuItem("Logout");
 
-        menuItem1.setOnAction(event -> changePassword(stageLoggedOn));
+        menuItem1.setOnAction(event -> changePassword.changePassword(stageLoggedOn));
 
         menuItem2.setOnAction(event -> {
             main.start(stageLoggedOn);
@@ -69,17 +73,14 @@ public class LoggedOn {
         TableColumn otherInfoCol = new TableColumn("OTHER INFO");
         otherInfoCol.setCellValueFactory(
                 new PropertyValueFactory<ChildAccount, String>("other"));
-        
-        
+
         TableColumn editCol = new TableColumn("EDIT");
         editCol.setCellValueFactory(
                 new PropertyValueFactory<ChildAccount, String>("btnEdit"));
         TableColumn removeCol = new TableColumn("REMOVE");
         removeCol.setCellValueFactory(
                 new PropertyValueFactory<ChildAccount, Button>("btnRemove"));
-        
 
-        
         loginCol.prefWidthProperty().bind(table.widthProperty().multiply(0.20));
         usernameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.20));
         passwordCol.prefWidthProperty().bind(table.widthProperty().multiply(0.20));
@@ -120,7 +121,7 @@ public class LoggedOn {
 
         Button addbtn = new Button("Add");
         addbtn.setOnAction(event -> add());
-        
+
         hb.getChildren().addAll(loginTxt, usernameTxt, passwordTxt, otherInfoTxt, addbtn);
         hb.setSpacing(3);
         hb.setAlignment(Pos.CENTER);
@@ -137,46 +138,29 @@ public class LoggedOn {
         stageLoggedOn.show();
     }
 
-    private void changePassword(Stage stageChangePassword) {
-
-        VBox root = new VBox();
-
-        TextField txtNewPswd = new TextField();
-
-        Button btnChange = new Button("Change Password");
-        btnChange.setOnAction(event -> {
-            arrayMasterAccount.getLogged().setPassword(txtNewPswd.getText());
-            loggedOn(stageChangePassword);
-        });
-
-        Button btnBack = new Button("Back");
-        btnBack.setOnAction(event -> loggedOn(stageChangePassword));
-
-        root.getChildren().addAll(txtNewPswd, btnChange, btnBack);
-
-        Scene scene = new Scene(root, 800, 600);
-        stageChangePassword.setTitle("DC Password Organizer: Change Password Of "
-                + arrayMasterAccount.getLogged().getUserName());
-        stageChangePassword.setScene(scene);
-        stageChangePassword.show();
-    }
-
     private void display() {
         data.clear();
-        for (int i = 0 ; i < arrayMasterAccount.getLogged().getChildAccounts().size() ; i++) {
+        for (int i = 0; i < arrayMasterAccount.getLogged().getChildAccounts().size(); i++) {
             data.add(arrayMasterAccount.getLogged().getChildAccounts().get(i));
         }
     }
 
     private void add() {
-        arrayMasterAccount.getLogged().addChildAccount(new ChildAccount
-        (loginTxt.getText(), usernameTxt.getText(), passwordTxt.getText(),
-                otherInfoTxt.getText()));
-        loginTxt.clear();
-        usernameTxt.clear();
-        passwordTxt.clear();
-        otherInfoTxt.clear();
-        display();
+        try {
+            arrayMasterAccount.getLogged().addChildAccount(new ChildAccount(loginTxt.getText(), usernameTxt.getText(), passwordTxt.getText(),
+                    otherInfoTxt.getText()));
+            loginTxt.clear();
+            usernameTxt.clear();
+            passwordTxt.clear();
+            otherInfoTxt.clear();
+            display();
+        } catch (IllegalArgumentException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Account Addition Error");
+            alert.setHeaderText("Entered Account Information Not Valid");
+            alert.setContentText(ex.toString());
+            Optional<ButtonType> result = alert.showAndWait();
+        }
     }
 
 }
