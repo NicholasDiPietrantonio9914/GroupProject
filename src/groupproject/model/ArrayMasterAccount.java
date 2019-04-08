@@ -112,7 +112,6 @@ public class ArrayMasterAccount {
         } catch (IOException ex) {
             System.out.println(ex);
         }
-    
 
     }
 
@@ -133,7 +132,6 @@ public class ArrayMasterAccount {
                         (String) masterAccount.get("securityQuestion"), 
                         (String) masterAccount.get("securityAnswer"));
                 
-                
                 for (int j = 0 ; j < childAccs.size() ; j++) {
                     JSONObject childAccount = (JSONObject) childAccs.get(j);
                     ChildAccount childAcc = new ChildAccount(
@@ -153,8 +151,6 @@ public class ArrayMasterAccount {
         } catch (IOException ex) {
             System.out.println(ex);
         }
-        
-        
     
     }
 }
