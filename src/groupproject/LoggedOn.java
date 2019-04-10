@@ -4,7 +4,6 @@ import groupproject.model.*;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import static javafx.geometry.Pos.BOTTOM_CENTER;
@@ -12,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
@@ -32,7 +30,7 @@ public class LoggedOn {
 
     private ArrayMasterAccount arrayMasterAccount = new ArrayMasterAccount();
     private final ObservableList<ChildAccount> data = FXCollections.observableArrayList();
-    TableView<ChildAccount> table = new TableView<ChildAccount>();
+    private TableView<ChildAccount> table = new TableView<ChildAccount>();
     private TextField loginTxt;
     private TextField usernameTxt;
     private TextField otherInfoTxt;
@@ -41,6 +39,7 @@ public class LoggedOn {
     public void loggedOn(Stage stageLoggedOn) {
 
         Main main = new Main();
+        EditChild editChild = new EditChild();
         ChangePassword changePassword = new ChangePassword();
 
         display();
@@ -74,35 +73,42 @@ public class LoggedOn {
         otherInfoCol.setCellValueFactory(
                 new PropertyValueFactory<ChildAccount, String>("other"));
 
-        TableColumn editCol = new TableColumn("EDIT");
-        editCol.setCellValueFactory(
-                new PropertyValueFactory<ChildAccount, String>("btnEdit"));
-        TableColumn removeCol = new TableColumn("REMOVE");
-        removeCol.setCellValueFactory(
-                new PropertyValueFactory<ChildAccount, Button>("btnRemove"));
+        Button btnRemove = new Button("Remove");
+        btnRemove.setOnAction(event -> {
+            if (!(table.getSelectionModel().getSelectedIndex() == -1)) {
+                for (int i = 0; i < arrayMasterAccount.getLogged().
+                        getChildAccounts().size(); i++) {
+                    if (data.get(table.getSelectionModel().getSelectedIndex()).getLogin().equals(
+                            arrayMasterAccount.getLogged().getChildAccounts().get(i).getLogin())) {
+                        arrayMasterAccount.getLogged().getChildAccounts().remove(i);
+                    }
+                }
+                table.getItems().remove(table.getSelectionModel().getSelectedIndex());
+                arrayMasterAccount.createJson();
+            }
+        });
+
+        Button btnEdit = new Button("Edit");
+        btnEdit.setOnAction(event -> {
+            if (!(table.getSelectionModel().getSelectedIndex() == -1)) {
+                arrayMasterAccount.getLogged().setEditChild(
+                        data.get(table.getSelectionModel().getSelectedIndex()));
+                editChild.editChild(stageLoggedOn);
+            }
+        });
 
         loginCol.prefWidthProperty().bind(table.widthProperty().multiply(0.20));
         usernameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.20));
         passwordCol.prefWidthProperty().bind(table.widthProperty().multiply(0.20));
-        otherInfoCol.prefWidthProperty().bind(table.widthProperty().multiply(0.20));
-        editCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
-        removeCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
-
-        loginCol.setResizable(true);
-        usernameCol.setResizable(true);
-        passwordCol.setResizable(true);
-        otherInfoCol.setResizable(true);
-        editCol.setResizable(true);
-        removeCol.setResizable(true);
+        otherInfoCol.prefWidthProperty().bind(table.widthProperty().multiply(0.40));
 
         table.setItems(data);
-        table.getColumns().addAll(loginCol, usernameCol, passwordCol, otherInfoCol, editCol, removeCol);
+        table.getColumns().addAll(loginCol, usernameCol, passwordCol, otherInfoCol);
 
         VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(25, 25, 25, 25));
         vbox.setAlignment(BOTTOM_CENTER);
-        //vbox.setVgrow(table, Priority.ALWAYS);
 
         HBox hb = new HBox();
 
@@ -122,7 +128,8 @@ public class LoggedOn {
         Button addbtn = new Button("Add");
         addbtn.setOnAction(event -> add());
 
-        hb.getChildren().addAll(loginTxt, usernameTxt, passwordTxt, otherInfoTxt, addbtn);
+        hb.getChildren().addAll(loginTxt, usernameTxt, passwordTxt, otherInfoTxt,
+                addbtn, btnRemove, btnEdit);
         hb.setSpacing(3);
         hb.setAlignment(Pos.CENTER);
         vbox.getChildren().addAll(table, hb);
@@ -153,6 +160,7 @@ public class LoggedOn {
             usernameTxt.clear();
             passwordTxt.clear();
             otherInfoTxt.clear();
+            arrayMasterAccount.createJson();
             display();
         } catch (IllegalArgumentException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -162,5 +170,4 @@ public class LoggedOn {
             Optional<ButtonType> result = alert.showAndWait();
         }
     }
-
 }

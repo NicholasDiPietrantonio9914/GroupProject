@@ -1,9 +1,11 @@
-
 package groupproject;
 
 import groupproject.model.*;
+import java.util.Optional;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -16,7 +18,7 @@ import javafx.stage.Stage;
 public class ChangePassword {
 
     public void changePassword(Stage stageChangePassword) {
-        
+
         ArrayMasterAccount arrayMasterAccount = new ArrayMasterAccount();
         LoggedOn loggedOn = new LoggedOn();
 
@@ -26,8 +28,17 @@ public class ChangePassword {
 
         Button btnChange = new Button("Change Password");
         btnChange.setOnAction(event -> {
-            arrayMasterAccount.getLogged().setPassword(txtNewPswd.getText());
-            loggedOn.loggedOn(stageChangePassword);
+            try {
+                arrayMasterAccount.getLogged().setPassword(txtNewPswd.getText());
+                arrayMasterAccount.createJson();
+                loggedOn.loggedOn(stageChangePassword);
+            } catch (IllegalArgumentException ex) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Password");
+                alert.setHeaderText("Entered Password Not Valid");
+                alert.setContentText(ex.toString());
+                Optional<ButtonType> result = alert.showAndWait();
+            }
         });
 
         Button btnBack = new Button("Back");

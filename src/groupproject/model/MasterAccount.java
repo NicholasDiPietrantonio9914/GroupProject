@@ -1,4 +1,3 @@
-
 package groupproject.model;
 
 import java.util.ArrayList;
@@ -8,22 +7,30 @@ import java.util.Objects;
  *
  * @author IKTCFUUTJFHMX
  */
-public class MasterAccount implements Account{
-    
+public class MasterAccount implements Account {
+
     private String userName;
     private String password;
     private String securityQuestion;
     private String securityAnswer;
-    private ArrayList <ChildAccount> childAccounts = new ArrayList<>();
-    private ArrayMasterAccount update = new ArrayMasterAccount();
+    private ArrayList<ChildAccount> childAccounts = new ArrayList<>();
+    private static ChildAccount editChild;
 
-    public MasterAccount(String userName, String password, 
+    public ChildAccount getEditChild() {
+        return editChild;
+    }
+
+    public void setEditChild(ChildAccount editChild) {
+        this.editChild = editChild;
+    }
+
+    public MasterAccount(String userName, String password,
             String securityQuestion, String securityAnswer) {
-        if ((verifyPassOrUserLength(password)) || (password.contains(" "))) {
+        if (verifyPassOrUser(password)) {
             throw new IllegalArgumentException("Invalid password entered");
-        } else if ((verifyPassOrUserLength(userName)) || (password.contains(" "))) {
+        } else if (verifyPassOrUser(userName)) {
             throw new IllegalArgumentException("Invalid username entered");
-        } else if ((securityAnswer.contains(" ")) || (securityAnswer.equals(""))) {
+        } else if (securityAnswer.equals("")) {
             throw new IllegalArgumentException("Invalid security answer entered");
         } else {
             this.userName = userName;
@@ -44,28 +51,50 @@ public class MasterAccount implements Account{
     public ArrayList<ChildAccount> getChildAccounts() {
         return childAccounts;
     }
-    
+
     public void addChildAccount(ChildAccount childAccount) {
+        for (int i = 0; i < childAccounts.size(); i++) {
+            if (childAccounts.get(i).getLogin().equals(childAccount.getLogin())) {
+                throw new IllegalArgumentException("Can not have two child accounts "
+                        + "with the same login name");
+            }
+        }
         childAccounts.add(childAccount);
-        update.createJson();
     }
     
-    public boolean verifyPassOrUserLength(String passOrUser){
-        
+    public void editEditChild (String txtEditLog, String txtEditUser,
+            String txtEditPass, String txtEditOther) {
+        for (int i = 0; i < childAccounts.size(); i++) {
+            if (childAccounts.get(i).getLogin().equals(txtEditLog)) {
+                throw new IllegalArgumentException("Can not have two child accounts "
+                        + "with the same login name");
+            }
+        }
+        editChild.setLogin(txtEditLog);
+        editChild.setUserName(txtEditUser);
+        editChild.setPassword(txtEditPass);
+        editChild.setOther(txtEditOther);
+    }
+
+    public boolean verifyPassOrUser(String passOrUser) {
+
         if ((passOrUser.length() < 4) || (passOrUser.length() > 12)) {
             return true;
         }
+        for (int i = 0 ; i < passOrUser.length() ; i++) {
+            if(passOrUser.charAt(i) == ' ') {
+                return true;
+            }
+        }
         return false;
     }
-    
+
     @Override
     public void setPassword(String password) {
-        if ((verifyPassOrUserLength(password)) || (password.contains(" ")) ||
-                (this.password.equals(password))) {
+        if ((verifyPassOrUser(password)) || (this.password.equals(password))) {
             throw new IllegalArgumentException("Invalid password entered");
         } else {
             this.password = password;
-            update.createJson();
         }
     }
 
