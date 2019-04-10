@@ -146,7 +146,8 @@ public class LoggedOn {
         bp.setRight(hbox);
 
         Scene scene = new Scene(bp, 800, 600);
-        stageLoggedOn.setTitle("DC PASSWORD ORGANIZER");
+        stageLoggedOn.setTitle("DC Password Organizer: " + 
+                arrayMasterAccount.getLogged().getUserName());
         stageLoggedOn.setScene(scene);
         stageLoggedOn.show();
     }

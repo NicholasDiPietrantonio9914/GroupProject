@@ -15,28 +15,33 @@ public class MasterAccount implements Account {
     private ArrayList<ChildAccount> childAccounts = new ArrayList<>();
     private ChildAccount editChild;
 
-    public ChildAccount getEditChild() {
-        return editChild;
-    }
-
-    public void setEditChild(ChildAccount editChild) {
-        this.editChild = editChild;
-    }
-
+    
     public MasterAccount(String userName, String password,
             String securityQuestion, String securityAnswer) {
         if (verifyPassOrUser(password)) {
-            throw new IllegalArgumentException("Invalid password entered");
+            throw new IllegalArgumentException("Invalid password entered, password"
+                    + " can not contain spaces, must be between 4 and 12 characters in length");
         } else if (verifyPassOrUser(userName)) {
-            throw new IllegalArgumentException("Invalid username entered");
-        } else if (securityAnswer.equals("")) {
-            throw new IllegalArgumentException("Invalid security answer entered");
+            throw new IllegalArgumentException("Invalid username entered, username can not contain spaces,"
+                    + " must be between 4 and 12 characters in length");
+        } else if ((securityAnswer.equals("")) || (securityAnswer.charAt(0) == (' '))
+                || securityAnswer.charAt(securityAnswer.length()-1) == (' ')) {
+            throw new IllegalArgumentException("Security answer can not be empty, "
+                    + "and can not begin or end with a space");
         } else {
             this.userName = userName;
             this.password = password;
             this.securityQuestion = securityQuestion;
             this.securityAnswer = securityAnswer;
         }
+    }
+    
+    public ChildAccount getEditChild() {
+        return editChild;
+    }
+
+    public void setEditChild(ChildAccount editChild) {
+        this.editChild = editChild;
     }
 
     public String getSecurityQuestion() {
@@ -91,9 +96,10 @@ public class MasterAccount implements Account {
 
     @Override
     public void setPassword(String password) {
-        if ((verifyPassOrUser(password))) {
+        if ((verifyPassOrUser(password)) || this.password.equals(password)) {
             throw new IllegalArgumentException("Invalid password entered, password"
-                    + " can not contain spaces, and must be between 4 and 12 characters in length");
+                    + " can not contain spaces, must be between 4 and 12 characters in length, and"
+                    + " can not be the same as your current password");
         } else {
             this.password = password;
         }

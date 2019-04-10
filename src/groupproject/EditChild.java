@@ -69,7 +69,7 @@ public class EditChild {
         Scene scene = new Scene(root);
 
         stageEditChild.setScene(scene);
-        stageEditChild.setTitle("DC PASSWORD ORGANIZER");
+        stageEditChild.setTitle("DC Password Organizer: Edit");
         stageEditChild.show();
     }
 
