@@ -33,7 +33,7 @@ public class LoggedOn {
 
     private ArrayMasterAccount arrayMasterAccount = new ArrayMasterAccount();
     private final ObservableList<ChildAccount> data = FXCollections.observableArrayList();
-    TableView<ChildAccount> table = new TableView<ChildAccount>();
+    private TableView<ChildAccount> table = new TableView<ChildAccount>();
     private TextField loginTxt;
     private TextField usernameTxt;
     private TextField otherInfoTxt;
@@ -42,6 +42,7 @@ public class LoggedOn {
     public void loggedOn(Stage stageLoggedOn) {
 
         Main main = new Main();
+        EditChild editChild = new EditChild();
         ChangePassword changePassword = new ChangePassword();
 
         display();
@@ -92,12 +93,35 @@ public class LoggedOn {
         otherInfoCol.setCellValueFactory(
                 new PropertyValueFactory<ChildAccount, String>("other"));
 
-        TableColumn editCol = new TableColumn("EDIT");
-        editCol.setCellValueFactory(
-                new PropertyValueFactory<ChildAccount, String>("btnEdit"));
-        TableColumn removeCol = new TableColumn("REMOVE");
-        removeCol.setCellValueFactory(
-                new PropertyValueFactory<ChildAccount, Button>("btnRemove"));
+        Button btnRemove = new Button("Remove");
+        btnRemove.setOnAction(event -> {
+            if (!(table.getSelectionModel().getSelectedIndex() == -1)) {
+                for (int i = 0; i < arrayMasterAccount.getLogged().
+                        getChildAccounts().size(); i++) {
+                    if (data.get(table.getSelectionModel().getSelectedIndex()).getLogin().equals(
+                            arrayMasterAccount.getLogged().getChildAccounts().get(i).getLogin())) {
+                        arrayMasterAccount.getLogged().getChildAccounts().remove(i);
+                    }
+                }
+                table.getItems().remove(table.getSelectionModel().getSelectedIndex());
+                arrayMasterAccount.createJson();
+            }
+        });
+
+        Button btnEdit = new Button("Edit");
+        btnEdit.setOnAction(event -> {
+            if (!(table.getSelectionModel().getSelectedIndex() == -1)) {
+                for (int i = 0; i < arrayMasterAccount.getLogged().getChildAccounts().size(); i++) {
+                    if (data.get(table.getSelectionModel().getSelectedIndex()).getLogin().equals(
+                            arrayMasterAccount.getLogged().getChildAccounts().get(i).getLogin())) {
+                        
+                        arrayMasterAccount.getLogged().setEditChild(
+                                arrayMasterAccount.getLogged().getChildAccounts().get(i));
+                        editChild.editChild(stageLoggedOn);
+                    }
+                }
+            }
+        });
 
         loginCol.prefWidthProperty().bind(table.widthProperty().multiply(0.25));
         usernameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.25));
@@ -142,9 +166,6 @@ public class LoggedOn {
         addbtn.setOnAction(event -> add());
 
         
-        Button btnRemove = new Button("Remove");
-        Button btnEdit = new Button("Edit");
-        
 //        VBox buttons = new VBox(5);
 //        buttons.getChildren().addAll(btnRemove, btnModify);
 //        buttons.setAlignment(Pos.CENTER_LEFT);
@@ -163,7 +184,8 @@ public class LoggedOn {
         
         
         Scene scene = new Scene(bp, 800, 600);
-        stageLoggedOn.setTitle("DC PASSWORD ORGANIZER");
+        stageLoggedOn.setTitle("DC Password Organizer: " + 
+                arrayMasterAccount.getLogged().getUserName());
         stageLoggedOn.setScene(scene);
         stageLoggedOn.show();
     }
@@ -183,6 +205,7 @@ public class LoggedOn {
             usernameTxt.clear();
             passwordTxt.clear();
             otherInfoTxt.clear();
+            arrayMasterAccount.createJson();
             display();
         } catch (IllegalArgumentException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -192,5 +215,4 @@ public class LoggedOn {
             Optional<ButtonType> result = alert.showAndWait();
         }
     }
-
 }
