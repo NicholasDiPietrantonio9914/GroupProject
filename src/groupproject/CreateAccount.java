@@ -19,11 +19,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
@@ -40,20 +37,24 @@ public class CreateAccount {
     public void createAccount(Stage stageCreate) {
 
         Main main = new Main();
+        
+        Text txtC = new Text("Create an Account");
+        txtC.setId("fancy");
 
-        VBox root = new VBox();
-
+        Label lblUserName = new Label("Username ");
+        Label lblPassword = new Label("Password ");
         TextField txtUserName = new TextField();
         PasswordField txtPassword = new PasswordField();
+        Label lblQn = new Label("Security Question ");
+        Label lblAns = new Label("Answer ");
         ComboBox secureQuestions = new ComboBox();
         secureQuestions.getItems().addAll("What is the name of your first pet?", 
                 "Is your name Paul?");
         secureQuestions.setValue("What is the name of your first pet?");
         TextField txtSecAns = new TextField();
-        Button btnBack = new Button("Back");
+        Hyperlink linkBack = new Hyperlink("< Back");
 
-        btnBack.setOnAction(event -> {
-            main.start(stageCreate);
+        linkBack.setOnAction(event -> { main.start(stageCreate);
         });
 
         Button btnCreate = new Button("Create");
@@ -65,9 +66,43 @@ public class CreateAccount {
             }
         });
 
-        root.getChildren().addAll(txtUserName, txtPassword, secureQuestions,
-                txtSecAns, btnCreate, btnBack);
-        Scene scene = new Scene(root, 800, 600);
+//        VBox root = new VBox();
+//        root.getChildren().addAll(lblUserName, txtUserName, lblPassword,
+//                txtPassword, secureQuestions,txtSecAns, btnCreate, btnBack);
+//        root.setAlignment(Pos.CENTER);
+
+        GridPane root = new GridPane();
+        root.setAlignment(Pos.CENTER);
+        
+        root.setHgap(55);
+        root.setVgap(10);
+        root.add(lblUserName, 0, 0);
+        root.add(txtUserName, 1, 0);
+        root.add(lblPassword, 0, 1);
+        root.add(txtPassword, 1, 1);
+        root.add(lblQn, 0, 2);
+        root.add(secureQuestions, 1, 2);
+        root.add(lblAns, 0, 3);
+        root.add(txtSecAns, 1, 3);
+        
+        
+        HBox hb = new HBox(300);
+        hb.setPadding(new Insets(20));
+        hb.getChildren().addAll(linkBack, btnCreate);
+        hb.setAlignment(Pos.CENTER);
+        
+        VBox vb = new VBox();
+        vb.getChildren().addAll(root, hb);
+        //vb.setAlignment(Pos.CENTER);
+        
+        BorderPane bp = new BorderPane();
+        //bp.setPadding(new Insets(50,50,50,50));
+        bp.setCenter(vb);
+        bp.setTop(txtC);
+        
+        Scene scene = new Scene(bp, 800, 600);
+        scene.getStylesheets().add("custom.css");
+        
         stageCreate.setTitle("DC Password Organizer: Create Account");
         stageCreate.setScene(scene);
         stageCreate.show();

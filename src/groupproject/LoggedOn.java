@@ -4,7 +4,6 @@ import groupproject.model.*;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import static javafx.geometry.Pos.BOTTOM_CENTER;
@@ -12,16 +11,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -54,10 +55,27 @@ public class LoggedOn {
             main.start(stageLoggedOn);
             arrayMasterAccount.setLogged(null);
         });
+        
+        //tbd
+        Text txtTitle = new Text("Homepage");
+        
+        Image image = new Image("images/dc.png");
+        ImageView displayImg = new ImageView(image);
+        displayImg.setFitWidth(75);
+        displayImg.setFitHeight(100);
 
         MenuButton menubtn = new MenuButton("Menu", null, menuItem1, menuItem2);
-
-        HBox hbox = new HBox(menubtn);
+        
+        VBox vIcon = new VBox(displayImg);
+        vIcon.setAlignment(Pos.TOP_LEFT);
+        
+        VBox vMenu = new VBox(menubtn);
+        vMenu.setAlignment(Pos.TOP_RIGHT);
+        
+        HBox hbox = new HBox(vIcon, vMenu);
+        hbox.setSpacing(550);
+        hbox.setAlignment(Pos.CENTER);
+        //hbox.setMargin(vMenu, new Insets(0, 0, 0, 0));
 
         table.setEditable(true);
 
@@ -81,57 +99,69 @@ public class LoggedOn {
         removeCol.setCellValueFactory(
                 new PropertyValueFactory<ChildAccount, Button>("btnRemove"));
 
-        loginCol.prefWidthProperty().bind(table.widthProperty().multiply(0.20));
-        usernameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.20));
-        passwordCol.prefWidthProperty().bind(table.widthProperty().multiply(0.20));
-        otherInfoCol.prefWidthProperty().bind(table.widthProperty().multiply(0.20));
-        editCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
-        removeCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
+        loginCol.prefWidthProperty().bind(table.widthProperty().multiply(0.25));
+        usernameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.25));
+        passwordCol.prefWidthProperty().bind(table.widthProperty().multiply(0.25));
+        otherInfoCol.prefWidthProperty().bind(table.widthProperty().multiply(0.25));
+        //editCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
+        //removeCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
 
         loginCol.setResizable(true);
         usernameCol.setResizable(true);
         passwordCol.setResizable(true);
         otherInfoCol.setResizable(true);
-        editCol.setResizable(true);
-        removeCol.setResizable(true);
+//        editCol.setResizable(true);
+//        removeCol.setResizable(true);
 
         table.setItems(data);
-        table.getColumns().addAll(loginCol, usernameCol, passwordCol, otherInfoCol, editCol, removeCol);
+        table.getColumns().addAll(loginCol, usernameCol, passwordCol, otherInfoCol);
 
         VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(25, 25, 25, 25));
         vbox.setAlignment(BOTTOM_CENTER);
         //vbox.setVgrow(table, Priority.ALWAYS);
+       
 
         HBox hb = new HBox();
 
         loginTxt = new TextField();
         loginTxt.setPromptText("Login");
-        loginTxt.setPrefWidth(150);
+        loginTxt.setPrefWidth(130);
         usernameTxt = new TextField();
-        usernameTxt.setPrefWidth(150);
+        usernameTxt.setPrefWidth(130);
         usernameTxt.setPromptText("Username");
         passwordTxt = new TextField();
-        passwordTxt.setPrefWidth(150);
+        passwordTxt.setPrefWidth(130);
         passwordTxt.setPromptText("Password");
         otherInfoTxt = new TextField();
         otherInfoTxt.setPromptText("Other");
-        otherInfoTxt.setPrefWidth(125);
+        otherInfoTxt.setPrefWidth(135);
 
         Button addbtn = new Button("Add");
         addbtn.setOnAction(event -> add());
 
-        hb.getChildren().addAll(loginTxt, usernameTxt, passwordTxt, otherInfoTxt, addbtn);
+        
+        Button btnRemove = new Button("Remove");
+        Button btnEdit = new Button("Edit");
+        
+//        VBox buttons = new VBox(5);
+//        buttons.getChildren().addAll(btnRemove, btnModify);
+//        buttons.setAlignment(Pos.CENTER_LEFT);
+        
+        hb.getChildren().addAll(loginTxt, usernameTxt, passwordTxt, 
+                otherInfoTxt, addbtn, btnEdit, btnRemove);
         hb.setSpacing(3);
-        hb.setAlignment(Pos.CENTER);
-        vbox.getChildren().addAll(table, hb);
+        hb.setAlignment(Pos.CENTER_LEFT);
+        vbox.getChildren().addAll(hb, table);
 
         BorderPane bp = new BorderPane();
-        bp.setPadding(new Insets(20, 20, 20, 20));
+        bp.setPadding(new Insets(20, 30, 20, 20));
         bp.setCenter(vbox);
-        bp.setRight(hbox);
-
+        bp.setTop(hbox);
+        //bp.setRight(buttons);
+        
+        
         Scene scene = new Scene(bp, 800, 600);
         stageLoggedOn.setTitle("DC PASSWORD ORGANIZER");
         stageLoggedOn.setScene(scene);
