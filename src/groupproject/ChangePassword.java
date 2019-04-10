@@ -6,8 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -24,6 +24,7 @@ public class ChangePassword {
 
         VBox root = new VBox();
 
+        Label lblPass = new Label("New Password:");
         PasswordField txtNewPswd = new PasswordField();
 
         Button btnChange = new Button("Change Password");
@@ -44,7 +45,7 @@ public class ChangePassword {
         Button btnBack = new Button("Back");
         btnBack.setOnAction(event -> loggedOn.loggedOn(stageChangePassword));
 
-        root.getChildren().addAll(txtNewPswd, btnChange, btnBack);
+        root.getChildren().addAll(lblPass, txtNewPswd, btnChange, btnBack);
 
         Scene scene = new Scene(root, 800, 600);
         stageChangePassword.setTitle("DC Password Organizer: Change Password Of "

@@ -91,9 +91,15 @@ public class LoggedOn {
         Button btnEdit = new Button("Edit");
         btnEdit.setOnAction(event -> {
             if (!(table.getSelectionModel().getSelectedIndex() == -1)) {
-                arrayMasterAccount.getLogged().setEditChild(
-                        data.get(table.getSelectionModel().getSelectedIndex()));
-                editChild.editChild(stageLoggedOn);
+                for (int i = 0; i < arrayMasterAccount.getLogged().getChildAccounts().size(); i++) {
+                    if (data.get(table.getSelectionModel().getSelectedIndex()).getLogin().equals(
+                            arrayMasterAccount.getLogged().getChildAccounts().get(i).getLogin())) {
+                        
+                        arrayMasterAccount.getLogged().setEditChild(
+                                arrayMasterAccount.getLogged().getChildAccounts().get(i));
+                        editChild.editChild(stageLoggedOn);
+                    }
+                }
             }
         });
 

@@ -1,14 +1,10 @@
 package groupproject.model;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -29,33 +25,19 @@ public class ArrayMasterAccount {
         createJson();
     }
 
+    public static ArrayList<MasterAccount> getMasterAccounts() {
+        return masterAccounts;
+    }
+
     public void accountExists(MasterAccount masterAccount) {
         for (int i = 0; i < masterAccounts.size(); i++) {
-            if (passwordExists(masterAccount) || userNameExists(masterAccount)) {
+            if (masterAccounts.get(i).getUserName().equals(masterAccount.getUserName())) {
                 throw new IllegalArgumentException("Account already exists");
             }
         }
         addMaster(masterAccount);
     }
-
-    public boolean passwordExists(MasterAccount masterAccount) {
-        for (int i = 0; i < masterAccounts.size(); i++) {
-            if (masterAccounts.get(i).getPassword().equals(masterAccount.getPassword())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean userNameExists(MasterAccount masterAccount) {
-        for (int i = 0; i < masterAccounts.size(); i++) {
-            if (masterAccounts.get(i).getUserName().equals(masterAccount.getUserName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    
     public boolean login(String userName, String password) {
         for (int i = 0; i < masterAccounts.size(); i++) {
             if ((masterAccounts.get(i).getUserName().equals(userName))
@@ -101,8 +83,6 @@ public class ArrayMasterAccount {
         }
         
         root.put("masterAccounts", jSONMasterAccounts);
-
-        System.out.println(root.toJSONString());
         
         try (FileWriter file = new FileWriter("src/groupproject/JSON/GroupProject.json")) {
  

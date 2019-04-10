@@ -30,15 +30,15 @@ public class EditChild {
 
         Label lblUser = new Label("Username:");
         TextField txtEditUser = new TextField();
-        txtEditLog.setText(arrayMasterAccount.getLogged().getEditChild().getLogin());
+        txtEditUser.setText(arrayMasterAccount.getLogged().getEditChild().getUserName());
 
         Label lblPass = new Label("Password:");
         TextField txtEditPass = new TextField();
-        txtEditLog.setText(arrayMasterAccount.getLogged().getEditChild().getLogin());
+        txtEditPass.setText(arrayMasterAccount.getLogged().getEditChild().getPassword());
 
         Label lblOther = new Label("Other:");
         TextField txtEditOther = new TextField();
-        txtEditLog.setText(arrayMasterAccount.getLogged().getEditChild().getLogin());
+        txtEditOther.setText(arrayMasterAccount.getLogged().getEditChild().getOther());
 
         Button btnBack = new Button("Back");
         btnBack.setOnAction(event -> {
@@ -51,8 +51,8 @@ public class EditChild {
             try {
                 arrayMasterAccount.getLogged().editEditChild(txtEditLog.getText(),
                         txtEditUser.getText(), txtEditPass.getText(), txtEditOther.getText());
-                
                 arrayMasterAccount.createJson();
+                arrayMasterAccount.getLogged().setEditChild(null);
                 loggedOn.loggedOn(stageEditChild);
             } catch (IllegalArgumentException ex) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -61,7 +61,6 @@ public class EditChild {
                 alert.setContentText(ex.toString());
                 Optional<ButtonType> result = alert.showAndWait();
             }
-            arrayMasterAccount.getLogged().setEditChild(null);
 
         });
 

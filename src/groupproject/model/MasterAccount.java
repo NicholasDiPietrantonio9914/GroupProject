@@ -1,7 +1,6 @@
 package groupproject.model;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  *
@@ -14,7 +13,7 @@ public class MasterAccount implements Account {
     private String securityQuestion;
     private String securityAnswer;
     private ArrayList<ChildAccount> childAccounts = new ArrayList<>();
-    private static ChildAccount editChild;
+    private ChildAccount editChild;
 
     public ChildAccount getEditChild() {
         return editChild;
@@ -65,7 +64,8 @@ public class MasterAccount implements Account {
     public void editEditChild (String txtEditLog, String txtEditUser,
             String txtEditPass, String txtEditOther) {
         for (int i = 0; i < childAccounts.size(); i++) {
-            if (childAccounts.get(i).getLogin().equals(txtEditLog)) {
+            if ((childAccounts.get(i).getLogin().equals(txtEditLog)) && 
+                   (!childAccounts.get(i).getLogin().equals(editChild.getLogin()))) {
                 throw new IllegalArgumentException("Can not have two child accounts "
                         + "with the same login name");
             }
@@ -91,8 +91,9 @@ public class MasterAccount implements Account {
 
     @Override
     public void setPassword(String password) {
-        if ((verifyPassOrUser(password)) || (this.password.equals(password))) {
-            throw new IllegalArgumentException("Invalid password entered");
+        if ((verifyPassOrUser(password))) {
+            throw new IllegalArgumentException("Invalid password entered, password"
+                    + " can not contain spaces, and must be between 4 and 12 characters in length");
         } else {
             this.password = password;
         }

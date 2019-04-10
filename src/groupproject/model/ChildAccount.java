@@ -1,7 +1,5 @@
 package groupproject.model;
 
-import java.util.Random;
-import javafx.scene.control.Button;
 
 /**
  *
@@ -24,14 +22,6 @@ public class ChildAccount implements Account {
             this.password = password;
             this.other = other;
         }
-    }
-
-    public int getUniqueIdentifier() {
-        return uniqueIdentifier;
-    }
-
-    public void setUniqueIdentifier(int uniqueIdentifier) {
-        this.uniqueIdentifier = uniqueIdentifier;
     }
 
     public String getOther() {
