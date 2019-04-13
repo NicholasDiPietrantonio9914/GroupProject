@@ -1,22 +1,23 @@
 /*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
+CSS for the DC Application
 */
-/* 
-    Created on : 9-Apr-2019, 11:57:14 PM
-    Author     : 
-*/
-#fancy {
-    -fx-font: 100px Tahoma;
-    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, aqua 0%, red 50%);
-    -fx-stroke: black;
-    -fx-stroke-width: 1;
-}
 
 #root {
- -fx-background-color:  lightgray;
- -fx-border-radius: 20;
- -fx-padding: 10 10 10 10;
- -fx-background-radius: 20;
+    -fx-background-color:#dadee0 ;
+    -fx-border-radius: 20;
+    -fx-padding: 10 10 10 10;
+    -fx-background-radius: 20;
+}
+
+#title {
+    -fx-font: 30px Helvetica;
+    -fx-stroke-width: 4;
+}
+
+#divider{
+    -fx-fill: grey;
+}
+
+#text{
+    -fx-font: 15px initial;
 }

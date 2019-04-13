@@ -1,9 +1,10 @@
 package groupproject.model;
 
-
 /**
+ * This class represent a login(username, password, other info) in the
+ * application
  *
- * @author IKTCFUUTJFHMX
+ * @author Nicholas Di Pietrantonio
  */
 public class ChildAccount implements Account {
 
@@ -13,9 +14,18 @@ public class ChildAccount implements Account {
     private String other;
     private int uniqueIdentifier;
 
+    /**
+     * This is a 4-arg constructor that will initialize the data fields
+     *
+     * @param login login name
+     * @param userName user's username for the login
+     * @param password user's password for the login
+     * @param other user's "other" info for the login
+     */
     public ChildAccount(String login, String userName, String password, String other) {
         if (login.trim().equals("")) {
-            throw new IllegalArgumentException("Login field must contain information at a minimum");
+            throw new IllegalArgumentException(
+                    "Information must be entered in the Login Field");
         } else {
             this.login = login;
             this.userName = userName;
@@ -38,7 +48,8 @@ public class ChildAccount implements Account {
 
     public void setLogin(String login) {
         if (login.trim().equals("")) {
-            throw new IllegalArgumentException("Login field must contain information at a minimum");
+            throw new IllegalArgumentException(
+                    "Information must be entered in the Login Field");
         } else {
             this.login = login;
         }

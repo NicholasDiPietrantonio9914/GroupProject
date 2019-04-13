@@ -26,14 +26,15 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
+ * This class represents the GUI for the homepage
  *
- * @author IKTCFUUTJFHMX
+ * @author Phuong Cam
  */
 public class LoggedOn {
 
     private ArrayMasterAccount arrayMasterAccount = new ArrayMasterAccount();
     private final ObservableList<ChildAccount> data = FXCollections.observableArrayList();
-    private TableView<ChildAccount> table = new TableView<ChildAccount>();
+    private TableView<ChildAccount> table = new TableView<>();
     private TextField loginTxt;
     private TextField usernameTxt;
     private TextField otherInfoTxt;
@@ -47,53 +48,45 @@ public class LoggedOn {
 
         display();
 
-        MenuItem menuItem1 = new MenuItem("Change Master Password");
-        MenuItem menuItem2 = new MenuItem("Logout");
+        MenuItem menu1 = new MenuItem("Change Master Password");
+        MenuItem menu2 = new MenuItem("Logout");
 
-        menuItem1.setOnAction(event -> changePassword.changePassword(stageLoggedOn));
+        menu1.setOnAction(event -> changePassword.changePassword(stageLoggedOn));
 
-        menuItem2.setOnAction(event -> {
+        menu2.setOnAction(event -> {
             main.start(stageLoggedOn);
             arrayMasterAccount.setLogged(null);
         });
-        
-        //tbd
-        Text txtTitle = new Text("Homepage");
-        
-        Image image = new Image("images/dc.png");
-        ImageView displayImg = new ImageView(image);
-        displayImg.setFitWidth(75);
-        displayImg.setFitHeight(100);
 
-        MenuButton menubtn = new MenuButton("Menu", null, menuItem1, menuItem2);
-        
-        VBox vIcon = new VBox(displayImg);
-        vIcon.setAlignment(Pos.TOP_LEFT);
-        
-        VBox vMenu = new VBox(menubtn);
-        vMenu.setAlignment(Pos.TOP_RIGHT);
-        
-        HBox hbox = new HBox(vIcon, vMenu);
-        hbox.setSpacing(550);
-        hbox.setAlignment(Pos.CENTER);
-        //hbox.setMargin(vMenu, new Insets(0, 0, 0, 0));
+        Text txtTitle = new Text("My Logins");
+        txtTitle.setId("title");
+
+        ImageView dpImg = new ImageView(new Image("images/dc2.png"));
+        dpImg.setFitWidth(30);
+        dpImg.setFitHeight(45);
+
+        ImageView displayImg2 = new ImageView(new Image("images/remove.png"));
+        ImageView displayImg3 = new ImageView(new Image("images/edit.png"));
+        ImageView displayImg4 = new ImageView(new Image("images/add.png"));
+
+        MenuButton btnMenu = new MenuButton("Menu", null, menu1, menu2);
+
+        HBox topPane = new HBox(dpImg, txtTitle, btnMenu);
+        topPane.setSpacing(225);
+        topPane.setAlignment(Pos.CENTER);
 
         table.setEditable(true);
 
         TableColumn loginCol = new TableColumn("LOGIN");
-        loginCol.setCellValueFactory(
-                new PropertyValueFactory<ChildAccount, String>("login"));
+        loginCol.setCellValueFactory(new PropertyValueFactory<>("login"));
         TableColumn usernameCol = new TableColumn("USERNAME");
-        usernameCol.setCellValueFactory(
-                new PropertyValueFactory<ChildAccount, String>("userName"));
+        usernameCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
         TableColumn passwordCol = new TableColumn("PASSWORD");
-        passwordCol.setCellValueFactory(
-                new PropertyValueFactory<ChildAccount, String>("password"));
+        passwordCol.setCellValueFactory(new PropertyValueFactory<>("password"));
         TableColumn otherInfoCol = new TableColumn("OTHER INFO");
-        otherInfoCol.setCellValueFactory(
-                new PropertyValueFactory<ChildAccount, String>("other"));
+        otherInfoCol.setCellValueFactory(new PropertyValueFactory<>("other"));
 
-        Button btnRemove = new Button("Remove");
+        Button btnRemove = new Button("", displayImg2);
         btnRemove.setOnAction(event -> {
             if (!(table.getSelectionModel().getSelectedIndex() == -1)) {
                 for (int i = 0; i < arrayMasterAccount.getLogged().
@@ -108,13 +101,13 @@ public class LoggedOn {
             }
         });
 
-        Button btnEdit = new Button("Edit");
+        Button btnEdit = new Button("", displayImg3);
         btnEdit.setOnAction(event -> {
             if (!(table.getSelectionModel().getSelectedIndex() == -1)) {
                 for (int i = 0; i < arrayMasterAccount.getLogged().getChildAccounts().size(); i++) {
                     if (data.get(table.getSelectionModel().getSelectedIndex()).getLogin().equals(
                             arrayMasterAccount.getLogged().getChildAccounts().get(i).getLogin())) {
-                        
+
                         arrayMasterAccount.getLogged().setEditChild(
                                 arrayMasterAccount.getLogged().getChildAccounts().get(i));
                         editChild.editChild(stageLoggedOn);
@@ -127,69 +120,60 @@ public class LoggedOn {
         usernameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.25));
         passwordCol.prefWidthProperty().bind(table.widthProperty().multiply(0.25));
         otherInfoCol.prefWidthProperty().bind(table.widthProperty().multiply(0.25));
-        //editCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
-        //removeCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
 
         loginCol.setResizable(true);
         usernameCol.setResizable(true);
         passwordCol.setResizable(true);
         otherInfoCol.setResizable(true);
-//        editCol.setResizable(true);
-//        removeCol.setResizable(true);
 
         table.setItems(data);
         table.getColumns().addAll(loginCol, usernameCol, passwordCol, otherInfoCol);
 
-        VBox vbox = new VBox();
-        vbox.setSpacing(5);
-        vbox.setPadding(new Insets(25, 25, 25, 25));
-        vbox.setAlignment(BOTTOM_CENTER);
-        //vbox.setVgrow(table, Priority.ALWAYS);
-       
-
-        HBox hb = new HBox();
-
         loginTxt = new TextField();
         loginTxt.setPromptText("Login");
-        loginTxt.setPrefWidth(130);
+        loginTxt.setPrefWidth(150);
         usernameTxt = new TextField();
-        usernameTxt.setPrefWidth(130);
+        usernameTxt.setPrefWidth(150);
         usernameTxt.setPromptText("Username");
         passwordTxt = new TextField();
-        passwordTxt.setPrefWidth(130);
+        passwordTxt.setPrefWidth(150);
         passwordTxt.setPromptText("Password");
         otherInfoTxt = new TextField();
         otherInfoTxt.setPromptText("Other");
-        otherInfoTxt.setPrefWidth(135);
+        otherInfoTxt.setPrefWidth(150);
 
-        Button addbtn = new Button("Add");
+        Button addbtn = new Button("", displayImg4);
         addbtn.setOnAction(event -> add());
 
-        
-//        VBox buttons = new VBox(5);
-//        buttons.getChildren().addAll(btnRemove, btnModify);
-//        buttons.setAlignment(Pos.CENTER_LEFT);
-        
-        hb.getChildren().addAll(loginTxt, usernameTxt, passwordTxt, 
+        HBox hbInput = new HBox();
+        hbInput.getChildren().addAll(loginTxt, usernameTxt, passwordTxt,
                 otherInfoTxt, addbtn, btnEdit, btnRemove);
-        hb.setSpacing(3);
-        hb.setAlignment(Pos.CENTER_LEFT);
-        vbox.getChildren().addAll(hb, table);
+        hbInput.setSpacing(3);
+        hbInput.setAlignment(Pos.CENTER_LEFT);
 
-        BorderPane bp = new BorderPane();
-        bp.setPadding(new Insets(20, 30, 20, 20));
-        bp.setCenter(vbox);
-        bp.setTop(hbox);
-        //bp.setRight(buttons);
-        
-        
-        Scene scene = new Scene(bp, 800, 600);
-        stageLoggedOn.setTitle("DC Password Organizer: " + 
-                arrayMasterAccount.getLogged().getUserName());
+        VBox centrePane = new VBox();
+        centrePane.setSpacing(5);
+        centrePane.setPadding(new Insets(25, 25, 25, 25));
+        centrePane.setAlignment(BOTTOM_CENTER);
+        centrePane.getChildren().addAll(hbInput, table);
+
+        BorderPane root = new BorderPane();
+        root.setPadding(new Insets(20, 30, 20, 20));
+        root.setCenter(centrePane);
+        root.setTop(topPane);
+
+        Scene scene = new Scene(root, 800, 600);
+        scene.getStylesheets().add("custom.css");
+        stageLoggedOn.setTitle("DC Password Organizer: "
+                + arrayMasterAccount.getLogged().getUserName());
         stageLoggedOn.setScene(scene);
         stageLoggedOn.show();
     }
 
+    /**
+     * This method obtains the login data from the JSON array and displays it in
+     * the tableview
+     */
     private void display() {
         data.clear();
         for (int i = 0; i < arrayMasterAccount.getLogged().getChildAccounts().size(); i++) {
@@ -197,6 +181,10 @@ public class LoggedOn {
         }
     }
 
+    /**
+     * This method takes the user data input and stores it in ChildAccount
+     * arraylist
+     */
     private void add() {
         try {
             arrayMasterAccount.getLogged().addChildAccount(new ChildAccount(loginTxt.getText(), usernameTxt.getText(), passwordTxt.getText(),
@@ -211,7 +199,7 @@ public class LoggedOn {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Account Addition Error");
             alert.setHeaderText("Entered Account Information Not Valid");
-            alert.setContentText(ex.toString());
+            alert.setContentText(ex.getMessage());
             Optional<ButtonType> result = alert.showAndWait();
         }
     }

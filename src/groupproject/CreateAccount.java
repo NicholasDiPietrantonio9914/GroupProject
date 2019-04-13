@@ -10,103 +10,122 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 /**
+ * This class contains the GUI logic for the Create an Account scene
  *
- * @author IKTCFUUTJFHMX
+ * @author Phuong Cam
  */
 public class CreateAccount {
 
     private MasterAccount masterAccount;
     private ArrayMasterAccount arrayMasterAccount = new ArrayMasterAccount();
 
+    /**
+     * Entry point for the create an account scene
+     *
+     * @param stageCreate The create an account stage which the application
+     * scene can be set
+     */
     public void createAccount(Stage stageCreate) {
 
         Main main = new Main();
-        
-        Text txtC = new Text("Create an Account");
-        txtC.setId("fancy");
 
-        Label lblUserName = new Label("Username ");
+        Label lblTitle = new Label("Create an Account");
+        lblTitle.setAlignment(Pos.CENTER);
+        lblTitle.setId("title");
+
+        Line line = new Line();
+        line.setStartX(100.0);
+        line.setStartY(0.0);
+        line.setEndX(600.0);
+        line.setEndY(0.0);
+        line.setStroke(Color.LIGHTGREY);
+
+        Label lblUsername = new Label("Username ");
         Label lblPassword = new Label("Password ");
+
         TextField txtUserName = new TextField();
         PasswordField txtPassword = new PasswordField();
+
         Label lblQn = new Label("Security Question ");
         Label lblAns = new Label("Answer ");
+
         ComboBox secureQuestions = new ComboBox();
-        secureQuestions.getItems().addAll("What is the name of your first pet?", 
+        secureQuestions.getItems().addAll("What is the name of your first pet?",
                 "Is your name Paul?");
         secureQuestions.setValue("What is the name of your first pet?");
-        TextField txtSecAns = new TextField();
-        Hyperlink linkBack = new Hyperlink("< Back");
+        TextField txtAns = new TextField();
 
-        linkBack.setOnAction(event -> { main.start(stageCreate);
+        Button btnBack = new Button("Back");
+        btnBack.setOnAction(event -> {
+            main.start(stageCreate);
         });
 
         Button btnCreate = new Button("Create");
         btnCreate.setOnAction((ActionEvent event) -> {
-            if (createAcc(txtUserName.getText(), txtPassword.getText(), 
-            secureQuestions.getValue().toString(), txtSecAns.getText())) {
+            if (createAcc(txtUserName.getText(), txtPassword.getText(),
+                    secureQuestions.getValue().toString(), txtAns.getText())) {
                 main.start(stageCreate);
             }
         });
 
-//        VBox root = new VBox();
-//        root.getChildren().addAll(lblUserName, txtUserName, lblPassword,
-//                txtPassword, secureQuestions,txtSecAns, btnCreate, btnBack);
-//        root.setAlignment(Pos.CENTER);
+        VBox vbInfo = new VBox();
+        vbInfo.getChildren().addAll(lblUsername, txtUserName, lblPassword, txtPassword,
+                lblQn, secureQuestions, lblAns, txtAns);
+        vbInfo.setSpacing(10);
+        vbInfo.setPadding(new Insets(10, 225, 10, 225));
 
-        GridPane root = new GridPane();
-        root.setAlignment(Pos.CENTER);
-        
-        root.setHgap(55);
-        root.setVgap(10);
-        root.add(lblUserName, 0, 0);
-        root.add(txtUserName, 1, 0);
-        root.add(lblPassword, 0, 1);
-        root.add(txtPassword, 1, 1);
-        root.add(lblQn, 0, 2);
-        root.add(secureQuestions, 1, 2);
-        root.add(lblAns, 0, 3);
-        root.add(txtSecAns, 1, 3);
-        
-        
-        HBox hb = new HBox(300);
-        hb.setPadding(new Insets(20));
-        hb.getChildren().addAll(linkBack, btnCreate);
-        hb.setAlignment(Pos.CENTER);
-        
-        VBox vb = new VBox();
-        vb.getChildren().addAll(root, hb);
-        //vb.setAlignment(Pos.CENTER);
-        
-        BorderPane bp = new BorderPane();
-        //bp.setPadding(new Insets(50,50,50,50));
-        bp.setCenter(vb);
-        bp.setTop(txtC);
-        
-        Scene scene = new Scene(bp, 800, 600);
+        HBox btns = new HBox(300);
+        btns.setSpacing(5);
+        btns.setPadding(new Insets(0, 225, 0, 0));
+        btns.getChildren().addAll(btnBack, btnCreate);
+        btns.setAlignment(Pos.CENTER_RIGHT);
+
+        VBox header = new VBox(lblTitle, line);
+        header.setAlignment(Pos.TOP_CENTER);
+        header.setSpacing(20);
+        header.setPadding(new Insets(50, 0, 20, 0));
+
+        VBox centrePane = new VBox();
+        centrePane.getChildren().addAll(header, vbInfo, btns);
+        centrePane.setAlignment(Pos.TOP_CENTER);
+        centrePane.setSpacing(10);
+
+        BorderPane root = new BorderPane();
+        root.setPadding(new Insets(10, 10, 10, 10));
+        root.setCenter(centrePane);
+
+        Scene scene = new Scene(root, 800, 600);
         scene.getStylesheets().add("custom.css");
-        
+
         stageCreate.setTitle("DC Password Organizer: Create Account");
         stageCreate.setScene(scene);
         stageCreate.show();
     }
 
-    public boolean createAcc(String userName, String password, 
+    /**
+     * This method creates a new master account
+     *
+     * @param userName the username of the master account
+     * @param password the password of the master account
+     * @param securityQuestion the master account security question
+     * @param securityAnswer the master account security answer
+     * @return true and creates a master account, false and returns an alert
+     */
+    public boolean createAcc(String userName, String password,
             String securityQuestion, String securityAnswer) {
         try {
-            masterAccount = new MasterAccount(userName, password, 
+            masterAccount = new MasterAccount(userName, password,
                     securityQuestion, securityAnswer);
             arrayMasterAccount.accountExists(masterAccount);
             return true;
@@ -114,7 +133,7 @@ public class CreateAccount {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Create Account Error");
             alert.setHeaderText("Entered Account Information Not Valid");
-            alert.setContentText(ex.toString());
+            alert.setContentText(ex.getMessage());
             Optional<ButtonType> result = alert.showAndWait();
             return false;
         }

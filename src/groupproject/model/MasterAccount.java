@@ -3,8 +3,9 @@ package groupproject.model;
 import java.util.ArrayList;
 
 /**
+ * This class represent a master account in the application
  *
- * @author IKTCFUUTJFHMX
+ * @author Nicholas Di Pietrantonio
  */
 public class MasterAccount implements Account {
 
@@ -15,19 +16,28 @@ public class MasterAccount implements Account {
     private ArrayList<ChildAccount> childAccounts = new ArrayList<>();
     private ChildAccount editChild;
 
-    
+    /**
+     * This is a 4-arg constructor that will initialize the data fields
+     *
+     * @param userName user's username
+     * @param password user's password
+     * @param securityQuestion user's security question
+     * @param securityAnswer user's security answer
+     */
     public MasterAccount(String userName, String password,
             String securityQuestion, String securityAnswer) {
         if (verifyPassOrUser(password)) {
-            throw new IllegalArgumentException("Invalid password entered, password"
-                    + " can not contain spaces, must be between 4 and 12 characters in length");
+            throw new IllegalArgumentException("Invalid password entered "
+                    + "Password cannot contain spaces and must be "
+                    + "between 4 and 12 characters in length");
         } else if (verifyPassOrUser(userName)) {
-            throw new IllegalArgumentException("Invalid username entered, username can not contain spaces,"
+            throw new IllegalArgumentException("Invalid username entered"
+                    + "Username cannot contain spaces and"
                     + " must be between 4 and 12 characters in length");
         } else if ((securityAnswer.equals("")) || (securityAnswer.charAt(0) == (' '))
-                || securityAnswer.charAt(securityAnswer.length()-1) == (' ')) {
-            throw new IllegalArgumentException("Security answer can not be empty, "
-                    + "and can not begin or end with a space");
+                || securityAnswer.charAt(securityAnswer.length() - 1) == (' ')) {
+            throw new IllegalArgumentException("Security answer cannot be empty "
+                    + "and cannot begin or end with a space");
         } else {
             this.userName = userName;
             this.password = password;
@@ -35,7 +45,7 @@ public class MasterAccount implements Account {
             this.securityAnswer = securityAnswer;
         }
     }
-    
+
     public ChildAccount getEditChild() {
         return editChild;
     }
@@ -56,23 +66,35 @@ public class MasterAccount implements Account {
         return childAccounts;
     }
 
+    /**
+     * This method adds a child account (login)
+     *
+     * @param childAccount the login entered
+     */
     public void addChildAccount(ChildAccount childAccount) {
         for (int i = 0; i < childAccounts.size(); i++) {
             if (childAccounts.get(i).getLogin().equals(childAccount.getLogin())) {
-                throw new IllegalArgumentException("Can not have two child accounts "
-                        + "with the same login name");
+                throw new IllegalArgumentException(
+                        "Login already exists");
             }
         }
         childAccounts.add(childAccount);
     }
-    
-    public void editEditChild (String txtEditLog, String txtEditUser,
+
+    /**
+     * This method allows modification to a child account
+     *
+     * @param txtEditLog the login
+     * @param txtEditUser the user's username
+     * @param txtEditPass the user's password
+     * @param txtEditOther the user's other information
+     */
+    public void editEditChild(String txtEditLog, String txtEditUser,
             String txtEditPass, String txtEditOther) {
         for (int i = 0; i < childAccounts.size(); i++) {
-            if ((childAccounts.get(i).getLogin().equals(txtEditLog)) && 
-                   (!childAccounts.get(i).getLogin().equals(editChild.getLogin()))) {
-                throw new IllegalArgumentException("Can not have two child accounts "
-                        + "with the same login name");
+            if ((childAccounts.get(i).getLogin().equals(txtEditLog))
+                    && (!childAccounts.get(i).getLogin().equals(editChild.getLogin()))) {
+                throw new IllegalArgumentException("Login already exists");
             }
         }
         editChild.setLogin(txtEditLog);
@@ -81,25 +103,36 @@ public class MasterAccount implements Account {
         editChild.setOther(txtEditOther);
     }
 
+    /**
+     * This method verifies the password length and input
+     *
+     * @param passOrUser the user's choice of password
+     * @return true if password meet requirement, false otherwise
+     */
     public boolean verifyPassOrUser(String passOrUser) {
 
         if ((passOrUser.length() < 4) || (passOrUser.length() > 12)) {
             return true;
         }
-        for (int i = 0 ; i < passOrUser.length() ; i++) {
-            if(passOrUser.charAt(i) == ' ') {
+        for (int i = 0; i < passOrUser.length(); i++) {
+            if (passOrUser.charAt(i) == ' ') {
                 return true;
             }
         }
         return false;
     }
 
+    /**
+     * This method stores a password for the user's master account
+     *
+     * @param password the user's password
+     */
     @Override
     public void setPassword(String password) {
         if ((verifyPassOrUser(password)) || this.password.equals(password)) {
             throw new IllegalArgumentException("Invalid password entered, password"
-                    + " can not contain spaces, must be between 4 and 12 characters in length, and"
-                    + " can not be the same as your current password");
+                    + " cannot contain spaces, must be between 4 and 12 characters in length, and"
+                    + " cannot be the same as your current password");
         } else {
             this.password = password;
         }
