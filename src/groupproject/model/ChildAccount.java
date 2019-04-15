@@ -26,12 +26,13 @@ public class ChildAccount implements Account {
         if (login.trim().equals("")) {
             throw new IllegalArgumentException(
                     "Information must be entered in the Login Field");
-        } 
-        else if (userName.trim().equals("")) {
+        } else if (userName.trim().equals("")) {
             throw new IllegalArgumentException(
                     "Information must be entered in the Username Field");
-        }
-        else {
+        } else if (password.trim().equals("")) {
+            throw new IllegalArgumentException(
+                    "Information must be entered in the Password Field");
+        } else {
             this.login = login;
             this.userName = userName;
             this.password = password;
@@ -62,13 +63,18 @@ public class ChildAccount implements Account {
 
     @Override
     public void setPassword(String password) {
+        if (password.trim().equals("")) {
+            throw new IllegalArgumentException(
+                    "Password must be entered in the Password Field.");
+        }
         this.password = password;
     }
 
     public void setUserName(String userName) {
-        if (userName.trim().equals("")) 
+        if (userName.trim().equals("")) {
             throw new IllegalArgumentException(
                     "Username must be entered in the Username Field.");
+        }
         this.userName = userName;
     }
 
