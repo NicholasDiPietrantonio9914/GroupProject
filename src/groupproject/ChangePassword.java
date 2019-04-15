@@ -1,13 +1,11 @@
 package groupproject;
 
 import groupproject.model.*;
-import java.util.Optional;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.layout.HBox;
@@ -50,12 +48,12 @@ public class ChangePassword {
                 alert.setTitle("Invalid Password");
                 alert.setHeaderText("Entered Password Not Valid");
                 alert.setContentText(ex.getMessage());
-                Optional<ButtonType> result = alert.showAndWait();
+                alert.showAndWait();
             }
         });
 
         Button btnBack = new Button("Back");
-        btnBack.setOnAction(event -> loggedOn.loggedOn(stageChangePassword));
+        btnBack.setOnAction(event -> loggedOn.loggedOn(stageChangePassword)); // callback
 
         HBox btns = new HBox(btnBack, btnChange);
         btns.setSpacing(5);

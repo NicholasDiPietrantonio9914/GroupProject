@@ -1,13 +1,11 @@
 package groupproject;
 
 import groupproject.model.*;
-import java.util.Optional;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -66,7 +64,7 @@ public class EditChild {
                 alert.setTitle("Account Edit Error");
                 alert.setHeaderText("Login Edit Error");
                 alert.setContentText(ex.getMessage());
-                Optional<ButtonType> result = alert.showAndWait();
+                alert.showAndWait();
             }
 
         });

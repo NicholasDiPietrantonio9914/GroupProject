@@ -1,14 +1,12 @@
 package groupproject;
 
 import groupproject.model.*;
-import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -134,7 +132,7 @@ public class CreateAccount {
             alert.setTitle("Create Account Error");
             alert.setHeaderText("Entered Account Information Not Valid");
             alert.setContentText(ex.getMessage());
-            Optional<ButtonType> result = alert.showAndWait();
+            alert.showAndWait();
             return false;
         }
     }

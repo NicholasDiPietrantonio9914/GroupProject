@@ -26,7 +26,12 @@ public class ChildAccount implements Account {
         if (login.trim().equals("")) {
             throw new IllegalArgumentException(
                     "Information must be entered in the Login Field");
-        } else {
+        } 
+        else if (userName.trim().equals("")) {
+            throw new IllegalArgumentException(
+                    "Information must be entered in the Username Field");
+        }
+        else {
             this.login = login;
             this.userName = userName;
             this.password = password;
@@ -61,6 +66,9 @@ public class ChildAccount implements Account {
     }
 
     public void setUserName(String userName) {
+        if (userName.trim().equals("")) 
+            throw new IllegalArgumentException(
+                    "Username must be entered in the Username Field.");
         this.userName = userName;
     }
 

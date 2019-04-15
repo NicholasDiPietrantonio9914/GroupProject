@@ -1,7 +1,6 @@
 package groupproject;
 
 import groupproject.model.*;
-import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -10,7 +9,6 @@ import static javafx.geometry.Pos.BOTTOM_CENTER;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
@@ -119,7 +117,7 @@ public class LoggedOn {
         loginCol.prefWidthProperty().bind(table.widthProperty().multiply(0.25));
         usernameCol.prefWidthProperty().bind(table.widthProperty().multiply(0.25));
         passwordCol.prefWidthProperty().bind(table.widthProperty().multiply(0.25));
-        otherInfoCol.prefWidthProperty().bind(table.widthProperty().multiply(0.25));
+        otherInfoCol.prefWidthProperty().bind(table.widthProperty().multiply(0.24));
 
         loginCol.setResizable(true);
         usernameCol.setResizable(true);
@@ -153,12 +151,12 @@ public class LoggedOn {
 
         VBox centrePane = new VBox();
         centrePane.setSpacing(5);
-        centrePane.setPadding(new Insets(25, 25, 25, 25));
+        centrePane.setPadding(new Insets(25, 25, 65, 25));
         centrePane.setAlignment(BOTTOM_CENTER);
         centrePane.getChildren().addAll(hbInput, table);
 
         BorderPane root = new BorderPane();
-        root.setPadding(new Insets(20, 30, 20, 20));
+        root.setPadding(new Insets(20, 20, 20, 20));
         root.setCenter(centrePane);
         root.setTop(topPane);
 
@@ -200,7 +198,7 @@ public class LoggedOn {
             alert.setTitle("Account Addition Error");
             alert.setHeaderText("Entered Account Information Not Valid");
             alert.setContentText(ex.getMessage());
-            Optional<ButtonType> result = alert.showAndWait();
+            alert.showAndWait();
         }
     }
 }

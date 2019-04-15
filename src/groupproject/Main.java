@@ -1,16 +1,13 @@
 package groupproject;
 
 import groupproject.model.*;
-import java.util.Optional;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -53,7 +50,7 @@ public class Main extends Application {
 
         Button btnLogin = new Button("Login");
 
-        btnLogin.setOnAction((ActionEvent event) -> {
+        btnLogin.setOnAction(event -> {
             if (arrayMasterAccount.login(txtUsername.getText(), txtPassword.getText())) {
                 loggedOn.loggedOn(primaryStage);
             } else {
@@ -61,7 +58,7 @@ public class Main extends Application {
                 alert.setTitle("Login Error");
                 alert.setHeaderText("Entered Login Information Not Valid");
                 alert.setContentText("Please enter valid login information");
-                Optional<ButtonType> result = alert.showAndWait();
+                alert.showAndWait();
             }
         });
 
@@ -89,7 +86,7 @@ public class Main extends Application {
         BorderPane centerPane = new BorderPane();
         centerPane.setTop(sp);
         centerPane.setCenter(vbLoginField);
-        centerPane.setId("root");
+        centerPane.setId("bg");
 
         VBox bottomPane = new VBox();
         bottomPane.setAlignment(Pos.CENTER_RIGHT);

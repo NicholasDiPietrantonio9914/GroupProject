@@ -1,16 +1,16 @@
 /*
 CSS for the DC Application
 */
-
-#root {
-    -fx-background-color:#dadee0 ;
+/* better to decouple the style attribute from the appn logic*/
+#bg {
+    -fx-background-color: #dadee0;
     -fx-border-radius: 20;
     -fx-padding: 10 10 10 10;
     -fx-background-radius: 20;
 }
 
 #title {
-    -fx-font: 30px Helvetica;
+    -fx-font: 30px "Myriad Pro";
     -fx-stroke-width: 4;
 }
 

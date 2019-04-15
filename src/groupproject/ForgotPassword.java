@@ -1,13 +1,11 @@
 package groupproject;
 
 import groupproject.model.*;
-import java.util.Optional;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -73,7 +71,7 @@ public class ForgotPassword {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Invalid Username Entered");
                 alert.setHeaderText("Enter a Valid Username");
-                Optional<ButtonType> result = alert.showAndWait();
+                alert.showAndWait();
             }
 
         }
@@ -171,19 +169,19 @@ public class ForgotPassword {
                 alert.setTitle("Forgot Password");
                 alert.setHeaderText("Your Password is:");
                 alert.setContentText(arrayMasterAccount.getLogged().getPassword());
-                Optional<ButtonType> result = alert.showAndWait();
+                alert.showAndWait();
                 arrayMasterAccount.setLogged(null);
                 main.start(stagePassword);
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Invalid Security Answer");
                 alert.setHeaderText("The Answer to Your Security Question is Invalid:");
-                Optional<ButtonType> result = alert.showAndWait();
+                alert.showAndWait();
             }
         });
 
-        Button btnBack = new Button("Back");
-        btnBack.setOnAction(event -> {
+        Button btnCancel = new Button("Cancel");
+        btnCancel.setOnAction(event -> {
             arrayMasterAccount.setLogged(null);
             main.start(stagePassword);
         });
@@ -192,7 +190,7 @@ public class ForgotPassword {
         input.setPadding(new Insets(0, 50, 10, 50));
         input.setAlignment(Pos.CENTER_LEFT);
 
-        HBox btns = new HBox(btnBack, btnGet);
+        HBox btns = new HBox(btnCancel, btnGet);
         btns.setAlignment(Pos.CENTER);
         btns.setPadding(new Insets(0, 0, 0, 150));
         btns.setSpacing(5);

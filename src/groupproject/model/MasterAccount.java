@@ -94,7 +94,7 @@ public class MasterAccount implements Account {
         for (int i = 0; i < childAccounts.size(); i++) {
             if ((childAccounts.get(i).getLogin().equals(txtEditLog))
                     && (!childAccounts.get(i).getLogin().equals(editChild.getLogin()))) {
-                throw new IllegalArgumentException("Login already exists");
+                throw new IllegalArgumentException("Login already exists");   
             }
         }
         editChild.setLogin(txtEditLog);
